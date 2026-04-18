@@ -1,0 +1,711 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>GAIYA INTERNAL - Premium Interface</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Outfit:wght@400;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #32c832;
+            --primary-hover: #50e650;
+            --primary-glow: rgba(50, 200, 50, 0.4);
+            --bg-deep: #0a0c12;
+            --bg-card: #0a0c12;
+            --bg-sidebar: #161822;
+            --bg-sidebar-dark: #101018;
+            --bg-input: #1a1c26;
+            --text-main: #e6e8f2;
+            --text-muted: #8c909c;
+            --border: #242630;
+            --accent-blue: #5078ff;
+            --accent-red: #ff2828;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Inter', sans-serif;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        body {
+            background: #06080c;
+            color: var(--text-main);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow-x: hidden;
+            background: radial-gradient(circle at center, #10141e 0%, #06080c 100%);
+            padding: 20px;
+        }
+
+        /* 3D Viewport */
+        .viewport {
+            perspective: 2000px;
+            width: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .main-window {
+            width: 100%;
+            max-width: 920px;
+            height: 540px;
+            background: var(--bg-card);
+            border-radius: 12px;
+            display: flex;
+            position: relative;
+            box-shadow: 0 50px 100px rgba(0,0,0,0.8), 0 0 50px rgba(50, 200, 50, 0.05);
+            border: 1px solid var(--border);
+            transform-style: preserve-3d;
+            transition: transform 0.1s ease-out;
+            overflow: hidden;
+        }
+
+        /* Sidebar */
+        .sidebar {
+            width: 260px; /* Base width roughly 3.5 ratio */
+            flex-shrink: 0;
+            height: 100%;
+            background: linear-gradient(to bottom, #161822, #101018);
+            border-right: 1px solid var(--border);
+            display: flex;
+            flex-direction: column;
+            z-index: 10;
+        }
+
+        .sidebar-logo {
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+
+        .logo-img {
+            width: 80px;
+            height: 80px;
+            background: rgba(50, 200, 50, 0.05);
+            border-radius: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 0 20px var(--primary-glow);
+            margin-bottom: 12px;
+            animation: pulse-logo 3s infinite;
+        }
+
+        @keyframes pulse-logo {
+            0% { box-shadow: 0 0 15px var(--primary-glow); }
+            50% { box-shadow: 0 0 35px rgba(50, 200, 50, 0.6); }
+            100% { box-shadow: 0 0 15px var(--primary-glow); }
+        }
+
+        .logo-img i { font-size: 40px; color: var(--primary); }
+
+        .nav-group { padding: 0 15px; margin-bottom: 20px; }
+        .nav-label {
+            font-size: 11px;
+            font-weight: 800;
+            color: rgba(255, 255, 255, 0.15);
+            text-transform: uppercase;
+            margin-bottom: 8px;
+            padding-left: 10px;
+            letter-spacing: 1px;
+        }
+
+        .nav-link {
+            display: flex;
+            align-items: center;
+            padding: 10px 12px;
+            border-radius: 6px;
+            cursor: pointer;
+            color: var(--text-muted);
+            transition: all 0.2s;
+            margin-bottom: 2px;
+            font-weight: 500;
+        }
+
+        .nav-link i { width: 20px; margin-right: 10px; font-size: 14px; text-align: center; }
+        .nav-link:hover { background: rgba(255, 255, 255, 0.03); color: var(--text-main); }
+        .nav-link.active { background: var(--primary); color: white; box-shadow: 0 4px 12px rgba(50, 200, 50, 0.2); }
+
+        .sidebar-user {
+            margin-top: auto;
+            padding: 15px;
+            border-top: 1px solid var(--border);
+            display: flex;
+            align-items: center;
+            background: rgba(0,0,0,0.2);
+        }
+
+        .user-ico {
+            width: 32px;
+            height: 32px;
+            background: var(--primary);
+            border-radius: 4px;
+            margin-right: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 800;
+            color: white;
+        }
+
+        .user-details span { display: block; }
+        .user-name { font-size: 13px; font-weight: 600; }
+        .user-ver { font-size: 11px; color: var(--text-muted); }
+
+        /* Main Content */
+        .content {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            background: #0a0c12;
+            position: relative;
+            min-width: 0;
+        }
+
+        /* Top Bar */
+        .top-bar {
+            height: 64px;
+            background: rgba(18, 20, 28, 0.8);
+            border-bottom: 1px solid var(--border);
+            display: flex;
+            align-items: center;
+            padding: 0 25px;
+            justify-content: space-between;
+        }
+
+        .current-tab-info { display: flex; align-items: center; }
+        .current-tab-info i { color: var(--primary); font-size: 18px; margin-right: 12px; animation: glow-text 2s infinite; }
+        .current-tab-info h1 { font-size: 16px; font-weight: 700; color: var(--primary); }
+
+        .search-pill {
+            background: #1a1c26;
+            border: 1px solid var(--border);
+            border-radius: 20px;
+            padding: 6px 15px;
+            width: 250px;
+            display: flex;
+            align-items: center;
+            color: var(--text-muted);
+            font-size: 13px;
+        }
+
+        /* Sub Headers */
+        .sub-tabs {
+            height: 44px;
+            display: flex;
+            padding: 0 20px;
+            gap: 25px;
+            align-items: center;
+            border-bottom: 1px solid var(--border);
+            background: rgba(255,255,255,0.01);
+            overflow-x: auto;
+            scrollbar-width: none;
+        }
+        .sub-tabs::-webkit-scrollbar { display: none; }
+
+        .sub-tab {
+            font-size: 12px;
+            font-weight: 700;
+            color: var(--text-muted);
+            cursor: pointer;
+            text-transform: uppercase;
+            position: relative;
+            height: 100%;
+            display: flex;
+            align-items: center;
+            transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+            white-space: nowrap;
+        }
+
+        .sub-tab:hover { color: var(--text-main); }
+        .sub-tab.active { color: var(--primary); }
+        .sub-tab.active::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            height: 2px;
+            background: var(--primary);
+            box-shadow: 0 0 12px var(--primary);
+        }
+
+        /* Page Content */
+        .page-body {
+            flex: 1;
+            padding: 20px;
+            overflow-y: auto;
+            position: relative;
+        }
+
+        .tab-panel { display: none; height: 100%; flex-direction: column; }
+        .tab-panel.active { display: flex; }
+
+        .sub-panel { display: none; animation: fadeIn 0.3s ease-out; }
+        .sub-panel.active { display: block; }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(5px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .control-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; }
+
+        .content-box {
+            background: rgba(22, 24, 34, 0.4);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            padding: 20px;
+            margin-bottom: 15px;
+            height: fit-content;
+        }
+
+        .box-title {
+            font-size: 13px;
+            font-weight: 700;
+            color: var(--primary);
+            margin-bottom: 20px;
+            text-transform: uppercase;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        /* UI Controls */
+        .row { display: flex; align-items: center; justify-content: space-between; margin-bottom: 15px; min-height: 24px; gap: 10px; }
+        .row span { font-size: 13px; font-weight: 500; }
+
+        .switch { position: relative; width: 44px; height: 22px; flex-shrink: 0; }
+        .switch input { opacity: 0; width: 0; height: 0; }
+        .slider { position: absolute; cursor: pointer; top: 0; left: 0; right: 0; bottom: 0; background: #1a1c26; transition: .3s; border-radius: 22px; border: 1px solid var(--border); }
+        .slider:before { position: absolute; content: ""; height: 14px; width: 14px; left: 4px; bottom: 3px; background: #fff; transition: .3s; border-radius: 50%; }
+        input:checked + .slider { background: var(--primary); border-color: var(--primary); box-shadow: 0 0 8px var(--primary-glow); }
+        input:checked + .slider:before { transform: translateX(20px); }
+
+        .range-container { width: 100%; margin: 10px 0; }
+        .range-head { display: flex; justify-content: space-between; font-size: 11px; margin-bottom: 4px; }
+        .range-input { -webkit-appearance: none; width: 100%; height: 6px; background: #1a1c26; border-radius: 3px; outline: none; }
+        .range-input::-webkit-slider-thumb { -webkit-appearance: none; width: 14px; height: 14px; background: var(--primary); border-radius: 50%; cursor: pointer; border: 2px solid white; box-shadow: 0 0 5px var(--primary); }
+
+        .keybind {
+            background: #1a1c26;
+            border: 1px solid var(--border);
+            padding: 4px 10px;
+            border-radius: 4px;
+            font-size: 11px;
+            color: var(--text-muted);
+            min-width: 50px;
+            text-align: center;
+            cursor: pointer;
+        }
+
+        .perf-btn {
+            background: rgba(50, 200, 50, 0.1);
+            border: 1px solid rgba(50, 200, 50, 0.2);
+            padding: 12px;
+            border-radius: 4px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            font-size: 12px;
+            font-weight: 600;
+            color: white;
+            cursor: pointer;
+            transition: 0.2s;
+            margin-bottom: 8px;
+        }
+        .perf-btn:hover { background: rgba(50, 200, 50, 0.2); }
+        .perf-btn.active { background: var(--primary); border-color: var(--primary); box-shadow: 0 0 10px var(--primary-glow); }
+
+        .color-dot { width: 18px; height: 18px; border-radius: 2px; border: 1px solid rgba(255,255,255,0.2); cursor: pointer; flex-shrink: 0; }
+
+        @keyframes glow-text {
+            0% { text-shadow: 0 0 5px var(--primary-glow); }
+            50% { text-shadow: 0 0 15px var(--primary); }
+            100% { text-shadow: 0 0 5px var(--primary-glow); }
+        }
+
+        /* Mobile Adjustments */
+        @media (max-width: 768px) {
+            body { padding: 10px; align-items: flex-start; overflow-y: auto; }
+            .viewport { perspective: none; }
+            .main-window {
+                height: auto;
+                flex-direction: column;
+                transform: none !important;
+                border-radius: 8px;
+            }
+            .sidebar {
+                width: 100%;
+                height: auto;
+                border-right: none;
+                border-bottom: 1px solid var(--border);
+            }
+            .sidebar-logo { padding: 15px; margin-bottom: 5px; flex-direction: row; justify-content: center; gap: 15px; }
+            .logo-img { width: 40px; height: 40px; margin-bottom: 0; border-radius: 8px; }
+            .logo-img i { font-size: 20px; }
+            
+            .nav-group { padding: 0 10px; margin-bottom: 10px; display: flex; flex-wrap: wrap; gap: 5px; }
+            .nav-label { width: 100%; font-size: 9px; margin-bottom: 4px; }
+            .nav-link { 
+                flex: 1 1 calc(50% - 10px); 
+                padding: 8px; 
+                font-size: 12px; 
+                justify-content: center;
+                margin-bottom: 0;
+            }
+            .nav-link i { margin-right: 6px; }
+            
+            .sidebar-user { display: none; }
+
+            .top-bar { height: 50px; padding: 0 15px; }
+            .search-pill { display: none; }
+            
+            .page-body { padding: 15px; min-height: 400px; }
+            .control-grid { grid-template-columns: 1fr; }
+            
+            .pricing-overlay { bottom: 10px; right: 10px; left: 10px; }
+            .wa-btn { justify-content: center; width: 100%; font-size: 12px; padding: 10px; }
+        }
+
+        .pricing-overlay {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            z-index: 100;
+        }
+
+        .wa-btn {
+            background: #25d366;
+            color: white;
+            padding: 12px 20px;
+            border-radius: 30px;
+            text-decoration: none;
+            font-weight: 700;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            box-shadow: 0 10px 20px rgba(0,0,0,0.4);
+            transition: 0.3s;
+            font-size: 14px;
+        }
+        .wa-btn:hover { transform: translateY(-5px); box-shadow: 0 15px 30px rgba(37, 211, 102, 0.3); }
+
+        ::-webkit-scrollbar { width: 6px; }
+        ::-webkit-scrollbar-track { background: transparent; }
+        ::-webkit-scrollbar-thumb { background: #242630; border-radius: 10px; }
+        ::-webkit-scrollbar-thumb:hover { background: var(--primary); }
+    </style>
+</head>
+<body>
+    <div class="viewport" id="viewport">
+        <div class="main-window" id="menu">
+            <!-- SIDEBAR -->
+            <div class="sidebar">
+                <div class="sidebar-logo">
+                    <div class="logo-img">
+                        <i class="fa-solid fa-shield-halved"></i>
+                    </div>
+                    <div style="font-family: 'Outfit'; font-weight: 800; font-size: 16px; color: var(--primary); letter-spacing: 1px;">GAIYA INTERNAL</div>
+                </div>
+
+                <div class="nav-group">
+                    <div class="nav-label">MOUSE AIM</div>
+                    <div class="nav-link active" data-tab-btn="aim">
+                        <i class="fa-solid fa-computer-mouse"></i>
+                        Aimbot
+                    </div>
+                </div>
+
+                <div class="nav-group">
+                    <div class="nav-label">VISUALS</div>
+                    <div class="nav-link" data-tab-btn="esp">
+                        <i class="fa-solid fa-eye"></i>
+                        ESP
+                    </div>
+                </div>
+
+                <div class="nav-group">
+                    <div class="nav-label">MISC</div>
+                    <div class="nav-link" data-tab-btn="misc">
+                        <i class="fa-solid fa-toolbox"></i>
+                        Misc
+                    </div>
+                    <div class="nav-link" data-tab-btn="configs">
+                        <i class="fa-solid fa-gear"></i>
+                        Configs
+                    </div>
+                    <div class="nav-link" data-tab-btn="account">
+                        <i class="fa-solid fa-user"></i>
+                        Price
+                    </div>
+                </div>
+
+                <div class="sidebar-user">
+                    <div class="user-ico">G</div>
+                    <div class="user-details">
+                        <span class="user-name">Premium User</span>
+                        <span class="user-ver">v1.0.2 Beta</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- CONTENT AREA -->
+            <div class="content">
+                <div class="top-bar">
+                    <div class="current-tab-info">
+                        <i class="fa-solid fa-computer-mouse" id="header-icon"></i>
+                        <h1 id="header-title">Aimbot</h1>
+                    </div>
+                    <div class="search-pill">
+                        <i class="fa-solid fa-magnifying-glass" style="margin-right: 10px;"></i>
+                        Search features...
+                    </div>
+                </div>
+
+                <!-- AIMBOT TAB -->
+                <div class="tab-panel active" id="tab-aim">
+                    <div class="sub-tabs">
+                        <div class="sub-tab active" data-sub="mousebot">MOUSEBOT</div>
+                        <div class="sub-tab" data-sub="aimrage">AIM RAGE</div>
+                        <div class="sub-tab" data-sub="triggerbot">TRIGGERBOT</div>
+                        <div class="sub-tab" data-sub="forceaim">FORCEAIM</div>
+                    </div>
+                    
+                    <div class="page-body">
+                        <div class="sub-panel active" id="sub-page-mousebot">
+                            <div class="control-grid">
+                                <div class="content-box">
+                                    <div class="box-title">Mousebot</div>
+                                    <div class="row">
+                                        <span>Enable Mousebot</span>
+                                        <label class="switch"><input type="checkbox" checked><span class="slider"></span></label>
+                                    </div>
+                                    <div class="row">
+                                        <span>Toggle Key</span>
+                                        <div class="keybind">[CAPS]</div>
+                                    </div>
+                                    <div class="range-container">
+                                        <div class="range-head"><span>Aim Distance</span><span>250m</span></div>
+                                        <input type="range" class="range-input" min="10" max="500" value="250">
+                                    </div>
+                                    <div class="row">
+                                        <span>Aim-line nearest</span>
+                                        <label class="switch"><input type="checkbox"><span class="slider"></span></label>
+                                    </div>
+                                    <div class="row">
+                                        <span>Ignore Bot Training</span>
+                                        <label class="switch"><input type="checkbox" checked><span class="slider"></span></label>
+                                    </div>
+                                </div>
+                                <div class="content-box">
+                                    <div class="box-title">Performance</div>
+                                    <div class="perf-btn active"><i class="fa-solid fa-rocket"></i> Max Performance</div>
+                                    <div class="perf-btn"><i class="fa-solid fa-gauge-high"></i> Average Performance</div>
+                                    <div class="perf-btn"><i class="fa-solid fa-shield-halved"></i> Undetectable</div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="sub-panel" id="sub-page-aimrage">
+                            <div class="content-box">
+                                <div class="box-title">Aim Rage Settings</div>
+                                <div class="row"><span>Enable AIM Rage</span><label class="switch"><input type="checkbox"><span class="slider"></span></label></div>
+                                <div class="row"><span>Only While Firing</span><label class="switch"><input type="checkbox" checked><span class="slider"></span></label></div>
+                                <div class="row"><span>Show FOV Circle</span><label class="switch"><input type="checkbox"><span class="slider"></span></label></div>
+                                <div class="range-container">
+                                    <div class="range-head"><span>Aim FOV</span><span>90.0px</span></div>
+                                    <input type="range" class="range-input" min="10" max="800" value="90">
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="sub-panel" id="sub-page-triggerbot">
+                            <div class="content-box">
+                                <div class="box-title">Trigger Bot</div>
+                                <div class="row"><span>Enable Trigger Bot</span><label class="switch"><input type="checkbox"><span class="slider"></span></label></div>
+                                <div class="row"><span>Toggle Key</span><div class="keybind">[V]</div></div>
+                                <div class="range-container">
+                                    <div class="range-head"><span>Trigger Delay</span><span>0.10s</span></div>
+                                    <input type="range" class="range-input" min="0" max="1" step="0.01" value="0.1">
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="sub-panel" id="sub-page-forceaim">
+                            <div class="control-grid">
+                                <div class="content-box">
+                                    <div class="box-title">Magnet Pull</div>
+                                    <div class="row"><span>Enable Magnet Pull</span><label class="switch"><input type="checkbox"><span class="slider"></span></label></div>
+                                    <div class="row"><span>Magnet Key</span><div class="keybind">[ALT]</div></div>
+                                </div>
+                                <div class="content-box">
+                                    <div class="box-title">Special Hacks</div>
+                                    <div class="row"><span>Teleport Kill</span><label class="switch"><input type="checkbox"><span class="slider"></span></label></div>
+                                    <div class="row"><span>Underground Kill</span><label class="switch"><input type="checkbox"><span class="slider"></span></label></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- ESP TAB -->
+                <div class="tab-panel" id="tab-esp">
+                    <div class="sub-tabs">
+                        <div class="sub-tab active" data-sub="esp-list">ESP</div>
+                        <div class="sub-tab" data-sub="chams-list">CHAMS</div>
+                    </div>
+                    <div class="page-body">
+                        <div class="sub-panel active" id="sub-page-esp-list">
+                            <div class="control-grid">
+                                <div class="content-box">
+                                    <div class="box-title">Visuals</div>
+                                    <div class="row"><span>Enable ESP</span><label class="switch"><input type="checkbox" checked><span class="slider"></span></label></div>
+                                    <div class="row"><span>Enable Lines</span><label class="switch"><input type="checkbox" checked><span class="slider"></span></label></div>
+                                    <div class="row"><span>Enable Box</span><label class="switch"><input type="checkbox" checked><span class="slider"></span></label></div>
+                                </div>
+                                <div class="content-box">
+                                    <div class="box-title">Colors</div>
+                                    <div class="row"><span>Box Color</span> <div class="color-dot" style="background:#32c832"></div></div>
+                                    <div class="row"><span>Skel Color</span> <div class="color-dot" style="background:#ffffff"></div></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- CONFIGS TAB -->
+                <div class="tab-panel" id="tab-configs">
+                    <div class="page-body">
+                        <div class="content-box">
+                            <div class="box-title">Settings</div>
+                            <div class="row"><span>Stream Mode</span><label class="switch"><input type="checkbox"><span class="slider"></span></label></div>
+                            <div class="row"><span>Hide Panel Key</span><div class="keybind">[INSERT]</div></div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- ACCOUNT TAB -->
+                <div class="tab-panel" id="tab-account">
+                    <div class="page-body">
+                        <div class="content-box" style="text-align:center">
+                            <div class="box-title" style="justify-content:center">Price List</div>
+                            <div style="font-size: 20px; font-weight:800; color:white; margin:10px 0;">GAIYA INTERNAL PREMIER</div>
+                            <hr style="border:0; border-top:1px solid var(--border); margin:15px 0">
+                            <div style="display:flex; flex-direction:column; gap:10px;">
+                                <div style="background:var(--bg-input); padding:12px; border-radius:8px; display:flex; justify-content:space-between; align-items:center;">
+                                    <span style="color:var(--primary); font-weight:700">7 Days Trial</span>
+                                    <span style="font-size:16px; color:white">Rs. 1000</span>
+                                </div>
+                                <div style="background:rgba(50, 200, 50, 0.1); border:1px solid var(--primary); padding:12px; border-radius:8px; display:flex; justify-content:space-between; align-items:center;">
+                                    <span style="color:white; font-weight:700">30 Days Standard</span>
+                                    <span style="font-size:16px; color:white">Rs. 2500</span>
+                                </div>
+                                <div style="background:var(--bg-input); padding:12px; border-radius:8px; display:flex; justify-content:space-between; align-items:center;">
+                                    <span style="color:var(--accent-red); font-weight:700">60 Days Ultimate</span>
+                                    <span style="font-size:16px; color:white">Rs. 4000</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- WHATSAPP CTA -->
+    <div class="pricing-overlay">
+        <a href="https://wa.me/+94742922327?text=Gaiya%20Internal%20Buy%20Ready" target="_blank" class="wa-btn">
+            <i class="fa-brands fa-whatsapp"></i>
+            Order via WhatsApp
+        </a>
+    </div>
+
+    <script>
+        const menu = document.getElementById('menu');
+        const viewport = document.getElementById('viewport');
+
+        // Professional 3D Tilt Effect - Disabled on Mobile
+        if (window.innerWidth > 768) {
+            viewport.addEventListener('mousemove', (e) => {
+                const x = (e.clientX / window.innerWidth - 0.5) * 15;
+                const y = (e.clientY / window.innerHeight - 0.5) * -15;
+                menu.style.transform = `rotateX(${y}deg) rotateY(${x}deg)`;
+            });
+
+            viewport.addEventListener('mouseleave', () => {
+                menu.style.transform = 'rotateX(0deg) rotateY(0deg)';
+            });
+        }
+
+        // Main Tab Switching Logic
+        const tabBtns = document.querySelectorAll('[data-tab-btn]');
+        const panels = document.querySelectorAll('.tab-panel');
+        const headerTitle = document.getElementById('header-title');
+        const headerIcon = document.getElementById('header-icon');
+
+        tabBtns.forEach(btn => {
+            btn.addEventListener('click', () => {
+                const target = btn.getAttribute('data-tab-btn');
+                
+                // Switch sidebar buttons
+                tabBtns.forEach(b => b.classList.remove('active'));
+                btn.classList.add('active');
+                
+                // Switch panels
+                panels.forEach(p => p.classList.remove('active'));
+                const activePanel = document.getElementById('tab-' + target);
+                activePanel.classList.add('active');
+                
+                // Update top bar info
+                headerTitle.innerText = btn.innerText.trim();
+                headerIcon.className = btn.querySelector('i').className;
+
+                // Reset sub-tabs to first one when changing main tab
+                const firstSub = activePanel.querySelector('.sub-tab');
+                if(firstSub) firstSub.click();
+
+                // On mobile, scroll the content into view
+                if (window.innerWidth <= 768) {
+                    document.querySelector('.content').scrollIntoView({ behavior: 'smooth' });
+                }
+            });
+        });
+
+        // Sub-tab Switching Logic
+        document.querySelectorAll('.sub-tab').forEach(st => {
+            st.addEventListener('click', () => {
+                const targetSub = st.getAttribute('data-sub');
+                const parentPanel = st.closest('.tab-panel');
+                
+                // Update sub-tab buttons in this panel
+                parentPanel.querySelectorAll('.sub-tab').forEach(t => t.classList.remove('active'));
+                st.classList.add('active');
+                
+                // Update sub-content-panels in this panel
+                parentPanel.querySelectorAll('.sub-panel').forEach(sp => sp.classList.remove('active'));
+                const targetContent = parentPanel.querySelector('#sub-page-' + targetSub);
+                if(targetContent) targetContent.classList.add('active');
+            });
+        });
+
+        // Interactive performance buttons
+        document.querySelectorAll('.perf-btn').forEach(pb => {
+            pb.addEventListener('click', () => {
+                pb.parentElement.querySelectorAll('.perf-btn').forEach(b => b.classList.remove('active'));
+                pb.classList.add('active');
+            });
+        });
+    </script>
+</body>
+</html>
