@@ -10,7 +10,7 @@ Welcome to the official web preview of **GAIYA INTERNAL**. This interactive dash
 
 ## 🚀 Experience the Menu
 You can view the live interactive 3D dashboard here:
-👉 **[YOUR LIVE GITHUB PAGES LINK HERE]**
+👉 **[[YOUR LIVE GITHUB PAGES LINK HERE](https://gaiyainternal.github.io/Intenal-panel/)]**
 
 ---
 
